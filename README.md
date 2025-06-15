@@ -1,3 +1,4 @@
+
 # CryptoTracker Pro - Student Project
 
 A comprehensive cryptocurrency dashboard built with React, Redux, and modern web technologies as part of a college web development project.
@@ -132,7 +133,7 @@ This project is created for educational purposes as part of a college web develo
 
 ---
 
-**Author**: [Student Name]  
+**Author**: [kartik paul]  
 **Course**: Web Development  
-**Institution**: [College Name]  
-**Year**: 2024
+**Institution**: [almabetter]  
+**Year**: 2025
