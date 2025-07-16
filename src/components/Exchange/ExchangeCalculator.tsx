@@ -44,21 +44,21 @@ export default function ExchangeCalculator() {
   const topCryptos = cryptocurrencies.slice(0, 10);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-6">Exchange Calculator</h2>
-      
-      <div className="space-y-4">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 overflow-hidden">
+      <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-6">Exchange Calculator</h2>
+
+      <div className="space-y-6">
         {/* From Section */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Sell</label>
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
             <div className="flex-1">
               <input
                 type="text"
                 value={fromAmount}
                 onChange={(e) => dispatch(setFromAmount(e.target.value))}
                 placeholder="0.00000"
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   error ? 'border-red-300' : 'border-gray-300'
                 }`}
               />
@@ -72,7 +72,7 @@ export default function ExchangeCalculator() {
             <select
               value={fromCurrency}
               onChange={(e) => dispatch(setFromCurrency(e.target.value))}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[120px]"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[100px]"
             >
               {topCryptos.map((crypto) => (
                 <option key={crypto.id} value={crypto.id}>
@@ -87,7 +87,7 @@ export default function ExchangeCalculator() {
         <div className="flex justify-center">
           <button
             onClick={handleSwap}
-            className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
           >
             <ArrowUpDown className="w-5 h-5 text-gray-600" />
           </button>
@@ -96,20 +96,20 @@ export default function ExchangeCalculator() {
         {/* To Section */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Buy</label>
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0">
             <div className="flex-1">
               <input
                 type="text"
                 value={toAmount}
                 readOnly
                 placeholder="0.00000"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
               />
             </div>
             <select
               value={toCurrency}
               onChange={(e) => dispatch(setToCurrency(e.target.value))}
-              className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[120px]"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white min-w-[100px]"
             >
               {topCryptos.map((crypto) => (
                 <option key={crypto.id} value={crypto.id}>
@@ -123,7 +123,7 @@ export default function ExchangeCalculator() {
         {/* Exchange Button */}
         <button
           onClick={() => alert(`Exchanged ${fromAmount} ${fromCurrency} to ${toAmount} ${toCurrency}`)}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium"
+          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors font-medium"
         >
           Exchange
         </button>

@@ -39,15 +39,15 @@ export default function App() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <main className="max-w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Main Content Area */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-6 sm:space-y-8">
             {/* Price Chart */}
             <MarketPriceChart />
             
             {/* Portfolio and Exchange Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
               <PortfolioChart />
               <ExchangeCalculator />
             </div>

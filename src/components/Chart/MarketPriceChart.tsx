@@ -36,7 +36,6 @@ export default function PriceChart() {
   const chartRef = useRef<ChartJS<'line', number[], string>>(null);
   const [days, setDays] = useState(7);
 
-  // Limit days to max 30 to match API limitation
   const limitedDays = days > 30 ? 30 : days;
   const [loading, setLoading] = useState(false);
   const [cache, setCache] = useState<Record<string, { labels: string[]; prices: number[] }>>({});
@@ -63,21 +62,13 @@ export default function PriceChart() {
     }
   }, [dispatch, selectedCrypto, baseCurrency, limitedDays]);
 
-  if (loading) {
-    return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center justify-center h-80">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
-
   const cacheKey = `${selectedCrypto[0]}-${baseCurrency}-${days}`;
   const chartDataCached = cache[cacheKey];
 
-  if (!chartDataCached || !chartDataCached.labels || !chartDataCached.prices || chartDataCached.labels.length === 0 || chartDataCached.prices.length === 0) {
+  if (loading || !chartDataCached || !chartDataCached.labels || !chartDataCached.prices || chartDataCached.labels.length === 0 || chartDataCached.prices.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center justify-center h-80">
-        <p className="text-gray-500">No data available for the selected time range.</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -88,22 +79,11 @@ export default function PriceChart() {
 
   const colors = ['#3B82F6', '#14B8A6', '#F97316', '#EF4444', '#8B5CF6', '#F59E0B'];
 
-  const currentCacheKey = `${selectedCrypto[0]}-${baseCurrency}-${days}`;
-  const currentChartData = cache[currentCacheKey];
-
-  if (!currentChartData || !currentChartData.labels.length || !currentChartData.prices.length) {
-    return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center justify-center h-80">
-        <p className="text-gray-500">No data available for the selected time range.</p>
-      </div>
-    );
-  }
-
   const data = {
-    labels: currentChartData.labels,
+    labels: chartDataCached.labels,
     datasets: selectedCryptoData.map((crypto, index) => ({
       label: crypto.name,
-      data: currentChartData.prices,
+      data: chartDataCached.prices,
       borderColor: colors[index % colors.length],
       backgroundColor: chartType === 'bar' 
         ? colors[index % colors.length] + '20'
@@ -119,7 +99,7 @@ export default function PriceChart() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
           usePointStyle: true,
           padding: 20,
@@ -175,50 +155,26 @@ export default function PriceChart() {
   const ChartComponent = chartType === 'line' ? Line : Bar;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Price Chart</h2>
-        <div className="flex items-center space-x-4 text-sm text-gray-500">
-          <button
-            onClick={() => setDays(7)}
-            className={`px-3 py-1 rounded-md transition-colors ${
-              days === 7 ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' : 'hover:bg-gray-100'
-            }`}
-            title="Show data for last 7 days"
-          >
-            7D
-          </button>
-          <button
-            onClick={() => setDays(30)}
-            className={`px-3 py-1 rounded-md transition-colors ${
-              days === 30 ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' : 'hover:bg-gray-100'
-            }`}
-            title="Show data for last 30 days"
-          >
-            30D
-          </button>
-          <button
-            onClick={() => setDays(90)}
-            className={`px-3 py-1 rounded-md transition-colors ${
-              days === 90 ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' : 'hover:bg-gray-100'
-            }`}
-            title="Data limited to last 30 days due to API limitation"
-          >
-            90D
-          </button>
-          <button
-            onClick={() => setDays(365)}
-            className={`px-3 py-1 rounded-md transition-colors ${
-              days === 365 ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' : 'hover:bg-gray-100'
-            }`}
-            title="Data limited to last 30 days due to API limitation"
-          >
-            1Y
-          </button>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900">Price Chart</h2>
+        <div className="flex items-center space-x-3 sm:space-x-4 text-sm text-gray-500 overflow-x-auto">
+          {[7, 30, 90, 365].map((d) => (
+            <button
+              key={d}
+              onClick={() => setDays(d)}
+              className={`px-2 py-1 sm:px-3 sm:py-1 rounded-md transition-colors whitespace-nowrap ${
+                days === d ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' : 'hover:bg-gray-100'
+              }`}
+              title={`Show data for last ${d} days`}
+            >
+              {d === 365 ? '1Y' : `${d}D`}
+            </button>
+          ))}
         </div>
       </div>
-      
-      <div className="h-80">
+
+      <div className="relative w-full min-w-0 h-56 sm:h-72">
         <ChartComponent ref={chartRef as any} data={data} options={options} />
       </div>
     </div>

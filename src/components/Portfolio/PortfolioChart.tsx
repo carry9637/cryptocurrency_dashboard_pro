@@ -38,7 +38,7 @@ export default function PortfolioChart() {
         cornerRadius: 8,
         padding: 12,
         callbacks: {
-          label: function(context: any) {
+          label: function (context: any) {
             const percentage = ((context.parsed / totalValue) * 100).toFixed(1);
             return `${context.label}: $${context.parsed.toLocaleString()} (${percentage}%)`;
           },
@@ -49,9 +49,9 @@ export default function PortfolioChart() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Portfolio</h2>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 overflow-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900">Portfolio</h2>
         <div className="text-right">
           <div className="text-2xl font-bold text-gray-900">
             ${totalValue.toLocaleString()}
@@ -60,7 +60,7 @@ export default function PortfolioChart() {
         </div>
       </div>
 
-      <div className="relative h-48 mb-6">
+      <div className="relative w-full min-w-0 h-36 sm:h-44 mb-6">
         <Doughnut data={data} options={options} />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">

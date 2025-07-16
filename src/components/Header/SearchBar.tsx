@@ -9,13 +9,15 @@ export default function SearchBar() {
   const [localQuery, setLocalQuery] = useState('');
   const dispatch = useDispatch();
   const searchRef = useRef<HTMLDivElement>(null);
-  
-  const { cryptocurrencies, searchQuery } = useSelector((state: RootState) => state.crypto);
 
-  const filteredCryptos = cryptocurrencies.filter(crypto =>
-    crypto.name.toLowerCase().includes(localQuery.toLowerCase()) ||
-    crypto.symbol.toLowerCase().includes(localQuery.toLowerCase())
-  ).slice(0, 8);
+  const { cryptocurrencies } = useSelector((state: RootState) => state.crypto);
+
+  const filteredCryptos = cryptocurrencies
+    .filter((crypto) =>
+      crypto.name.toLowerCase().includes(localQuery.toLowerCase()) ||
+      crypto.symbol.toLowerCase().includes(localQuery.toLowerCase())
+    )
+    .slice(0, 8);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -47,7 +49,10 @@ export default function SearchBar() {
   };
 
   return (
-    <div ref={searchRef} className="relative flex-1 max-w-md">
+    <div
+      ref={searchRef}
+      className="relative w-full sm:w-64 md:w-72 lg:w-80 xl:w-96 flex-shrink"
+    >
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
         <input
@@ -56,7 +61,7 @@ export default function SearchBar() {
           value={localQuery}
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => setIsOpen(localQuery.length > 0)}
-          className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-10 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
         {localQuery && (
           <button
@@ -77,16 +82,30 @@ export default function SearchBar() {
               className="w-full text-left px-4 py-3 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors border-b border-gray-100 last:border-b-0"
             >
               <div className="flex items-center space-x-3">
-                <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
-                <div>
-                  <div className="font-medium text-gray-900">{crypto.name}</div>
-                  <div className="text-sm text-gray-500">{crypto.symbol.toUpperCase()}</div>
+                <img
+                  src={crypto.image}
+                  alt={crypto.name}
+                  className="w-8 h-8 rounded-full"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-gray-900 truncate">
+                    {crypto.name}
+                  </div>
+                  <div className="text-sm text-gray-500 truncate">
+                    {crypto.symbol.toUpperCase()}
+                  </div>
                 </div>
-                <div className="ml-auto">
+                <div className="text-right">
                   <div className="text-sm font-medium text-gray-900">
                     ${crypto.current_price.toLocaleString()}
                   </div>
-                  <div className={`text-xs ${crypto.price_change_percentage_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div
+                    className={`text-xs ${
+                      crypto.price_change_percentage_24h >= 0
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                    }`}
+                  >
                     {crypto.price_change_percentage_24h >= 0 ? '+' : ''}
                     {crypto.price_change_percentage_24h.toFixed(2)}%
                   </div>

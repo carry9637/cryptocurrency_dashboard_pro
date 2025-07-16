@@ -28,23 +28,31 @@ export default function CurrencyDropdown() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full sm:w-auto">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        className="flex items-center justify-between w-full sm:w-auto px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
       >
-        <span className="font-medium text-gray-700">{selectedCurrency.code.toUpperCase()}</span>
-        <ChevronDown className={`w-4 h-4 text-gray-500 transform transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="font-medium text-gray-700 truncate">
+          {selectedCurrency.code.toUpperCase()}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 text-gray-500 transform transition-transform ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+        <div className="absolute top-full left-0 mt-1 w-full sm:w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
           {currencies.map((currency) => (
             <button
               key={currency.code}
               onClick={() => handleCurrencyChange(currency.code)}
               className={`w-full text-left px-4 py-3 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors ${
-                currency.code === baseCurrency ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                currency.code === baseCurrency
+                  ? 'bg-blue-50 text-blue-600'
+                  : 'text-gray-700'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -61,3 +69,4 @@ export default function CurrencyDropdown() {
     </div>
   );
 }
+
